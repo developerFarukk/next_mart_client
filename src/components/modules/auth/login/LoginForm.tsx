@@ -1,15 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 "use client";
+
 import ReCAPTCHA from "react-google-recaptcha";
 import { Button } from "@/components/ui/button";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Link from "next/link";
@@ -27,9 +22,7 @@ export default function LoginForm() {
 
     const [reCaptchaStatus, setReCaptchaStatus] = useState(false);
 
-    const {
-        formState: { isSubmitting },
-    } = form;
+    const { formState: { isSubmitting } } = form;
 
     const handleReCaptcha = async (value: string | null) => {
         try {
