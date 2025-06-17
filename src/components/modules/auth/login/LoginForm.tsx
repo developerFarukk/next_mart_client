@@ -16,33 +16,37 @@ import { loginUser, reCaptchaTokenVerification } from "@/services/AuthService";
 import { toast } from "sonner";
 import { loginSchema } from "./loginValidation";
 import ReCAPTCHA from "react-google-recaptcha";
+import { usePathname, useRouter } from "next/navigation";
+import { protectedRoutes } from "@/contants";
 
 // Create a wrapped version of ReCAPTCHA that supports ref forwarding
 const RecaptchaWithRef = dynamic(
-  () => import('react-google-recaptcha').then((mod) => {
-    const Recaptcha = mod.default;
-    return forwardRef<ReCAPTCHA, React.ComponentProps<typeof Recaptcha>>(
-      (props, ref) => <Recaptcha {...props} ref={ref} />
-    );
-  }),
-  {
-    ssr: false,
-    loading: () => <div className="h-[78px] w-[300px] bg-gray-200 rounded animate-pulse"></div>,
-  }
+    () => import('react-google-recaptcha').then((mod) => {
+        const Recaptcha = mod.default;
+        return forwardRef<ReCAPTCHA, React.ComponentProps<typeof Recaptcha>>(
+            (props, ref) => <Recaptcha {...props} ref={ref} />
+        );
+    }),
+    {
+        ssr: false,
+        loading: () => <div className="h-[78px] w-[300px] bg-gray-200 rounded animate-pulse"></div>,
+    }
 );
 
 export default function LoginForm() {
     const form = useForm({
         resolver: zodResolver(loginSchema),
         defaultValues: {
-            email: "",
-            password: ""
+            email: "mama@mamai.com",
+            password: "12345678"
         }
     });
 
     const [reCaptchaStatus, setReCaptchaStatus] = useState(false);
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const { formState: { isSubmitting }, reset } = form;
+    const pathname = usePathname();
+    const router = useRouter();
 
     const handleReCaptcha = async (value: string | null) => {
         try {
@@ -66,6 +70,9 @@ export default function LoginForm() {
             const res = await loginUser(data);
             if (res?.success) {
                 toast.success(res?.message);
+                if (protectedRoutes.some((route: any) => pathname.match(route))) {
+                    router.push("/");
+                }
                 reset();
                 recaptchaRef.current?.reset();
                 setReCaptchaStatus(false);
