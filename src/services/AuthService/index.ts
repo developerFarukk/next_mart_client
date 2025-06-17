@@ -2,6 +2,7 @@
 "use server";
 
 import { jwtDecode } from "jwt-decode";
+// import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 
@@ -36,9 +37,10 @@ export const loginUser = async (userData: FieldValues) => {
             headers: {
                 "Content-Type": "application/json",
             },
+
             body: JSON.stringify(userData),
         });
-
+        // revalidateTag("user")
         const result = await res.json();
 
 
