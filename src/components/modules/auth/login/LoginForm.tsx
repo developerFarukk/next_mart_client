@@ -18,6 +18,7 @@ import { loginSchema } from "./loginValidation";
 import ReCAPTCHA from "react-google-recaptcha";
 import { usePathname, useRouter } from "next/navigation";
 import { protectedRoutes } from "@/contants";
+import { useUser } from "@/context/UserContext";
 
 // Create a wrapped version of ReCAPTCHA that supports ref forwarding
 const RecaptchaWithRef = dynamic(
@@ -34,6 +35,7 @@ const RecaptchaWithRef = dynamic(
 );
 
 export default function LoginForm() {
+    
     const form = useForm({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -47,6 +49,7 @@ export default function LoginForm() {
     const { formState: { isSubmitting }, reset } = form;
     const pathname = usePathname();
     const router = useRouter();
+    const {  setIsLoading } = useUser();
 
     const handleReCaptcha = async (value: string | null) => {
         try {
@@ -74,14 +77,17 @@ export default function LoginForm() {
                     router.push("/");
                 }
                 reset();
+                setIsLoading(true)
                 recaptchaRef.current?.reset();
                 setReCaptchaStatus(false);
             } else {
                 toast.error(res?.message);
+                setIsLoading(false)
             }
         } catch (err: any) {
             console.error(err);
             toast.error(err.message || "An error occurred during login");
+            setIsLoading(false)
         }
     };
 
