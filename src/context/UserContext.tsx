@@ -45,6 +45,4 @@ export const useUser = () => {
 
 export default UserProvider;
 
-// iusdghfsdiuhf
-// iusdghfsdiuhf cxvdfgdfgdfgdfgdfgdfgdf dfgdfg dfgdf
-// iusdghfsdiuhf cxvdfgdfgdfgdfg
+
