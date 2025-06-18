@@ -22,16 +22,20 @@ import { createShop } from "@/services/Shop";
 import { toast } from "sonner";
 
 export default function CreateShopForm() {
+
     const [imageFiles, setImageFiles] = useState<File[] | []>([]);
     const [imagePreview, setImagePreview] = useState<string[] | []>([]);
 
     const form = useForm();
 
-    const {
-        formState: { isSubmitting },
-    } = form;
+    const { formState: { isSubmitting } } = form;
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        
+
+        console.log(data);
+        
+
         const servicesOffered = data?.servicesOffered
             .split(",")
             .map((service: string) => service.trim())
