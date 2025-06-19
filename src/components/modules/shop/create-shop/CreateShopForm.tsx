@@ -28,18 +28,21 @@ export default function CreateShopForm() {
 
     const form = useForm();
 
-    const { formState: { isSubmitting } } = form;
+    const { formState: { isSubmitting }, reset } = form;
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         
 
-        console.log(data);
+        // console.log(data);
         
 
         const servicesOffered = data?.servicesOffered
             .split(",")
             .map((service: string) => service.trim())
             .filter((service: string) => service !== "");
+
+            console.log(servicesOffered);
+            
 
         const modifiedData = {
             ...data,
@@ -54,13 +57,13 @@ export default function CreateShopForm() {
 
             const res = await createShop(formData);
 
-            console.log(res);
-
             if (res.success) {
                 toast.success(res.message);
+                reset()
             }
         } catch (err: any) {
             console.error(err);
+            toast.error(err)
         }
     };
 
