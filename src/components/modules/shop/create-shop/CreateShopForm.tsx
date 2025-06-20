@@ -41,7 +41,7 @@ export default function CreateShopForm() {
             .map((service: string) => service.trim())
             .filter((service: string) => service !== "");
 
-            console.log(servicesOffered);
+            // console.log(servicesOffered);
             
 
         const modifiedData = {
