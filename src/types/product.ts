@@ -1,6 +1,3 @@
-
-
-
 type Specification = {
   processor: string;
   ram: string;
