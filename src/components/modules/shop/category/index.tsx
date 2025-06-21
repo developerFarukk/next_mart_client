@@ -47,7 +47,7 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
     {
       accessorKey: "name",
       header: () => <div>Category Name</div>,
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <div className="flex items-center space-x-3">
           <Image
             src={row.original.icon}
@@ -63,7 +63,7 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
     {
       accessorKey: "isActive",
       header: () => <div>isActive</div>,
-      cell: ({ row }) => (
+      cell: ({ row }:any) => (
         <div>
           {row.original.isActive ? (
             <p className="text-green-500 border bg-green-100 w-14 text-center px-1 rounded">
@@ -80,7 +80,7 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
     {
       accessorKey: "action",
       header: () => <div>Action</div>,
-      cell: ({ row }) => (
+      cell: ({ row }: any ) => (
         <button
           className="text-red-500"
           title="Delete"

@@ -35,9 +35,9 @@ export function NMTable<TData, TValue>({
     <div className="my-5">
       <Table>
         <TableHeader>
-          {table?.getHeaderGroups().map((headerGroup) => (
+          {table?.getHeaderGroups().map((headerGroup : any ) => (
             <TableRow key={headerGroup.id} className="bg-gray-200">
-              {headerGroup.headers.map((header) => {
+              {headerGroup.headers.map((header: any) => {
                 return (
                   <TableHead
                     className="font-bold text-gray-600"
@@ -57,12 +57,12 @@ export function NMTable<TData, TValue>({
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
+            table.getRowModel().rows.map((row : any) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
               >
-                {row.getVisibleCells().map((cell) => (
+                {row.getVisibleCells().map((cell: any) => (
                   <TableCell className="py-4" key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
