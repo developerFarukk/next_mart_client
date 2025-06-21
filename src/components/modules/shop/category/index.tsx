@@ -26,6 +26,7 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
     setModalOpen(true);
   };
 
+  //   delete function
   const handleDeleteConfirm = async () => {
     try {
       if (selectedId) {
@@ -63,7 +64,7 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
     {
       accessorKey: "isActive",
       header: () => <div>isActive</div>,
-      cell: ({ row }:any) => (
+      cell: ({ row }: any) => (
         <div>
           {row.original.isActive ? (
             <p className="text-green-500 border bg-green-100 w-14 text-center px-1 rounded">
@@ -80,7 +81,7 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
     {
       accessorKey: "action",
       header: () => <div>Action</div>,
-      cell: ({ row }: any ) => (
+      cell: ({ row }: any) => (
         <button
           className="text-red-500"
           title="Delete"
@@ -96,7 +97,7 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
     <div>
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold">Manage Categories</h1>
-        <CreateCategoryModal />
+        <CreateCategoryModal isModalOpen={isModalOpen} setModalOpen={setModalOpen} />
       </div>
       <NMTable data={categories} columns={columns} />
       <DeleteConfirmationModal

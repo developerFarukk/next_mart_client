@@ -20,19 +20,30 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createCategory } from "@/services/Category";
-import { useState } from "react";
+import React, { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-const CreateCategoryModal = () => {
+interface CreateModalProps {
+  isModalOpen: boolean;
+  setModalOpen: (isOpen: boolean) => void;
+}
+
+const CreateCategoryModal: React.FC<CreateModalProps> = ({
+  isModalOpen,
+  setModalOpen,
+}) => {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreview, setImagePreview] = useState<string[] | []>([]);
 
   const form = useForm();
+
   const {
     formState: { isSubmitting },
+    reset,
   } = form;
 
+  // submit function
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const formData = new FormData();
@@ -43,12 +54,16 @@ const CreateCategoryModal = () => {
 
       if (res?.success) {
         toast.success(res?.message);
+        reset();
+        setImageFiles([]);
+        setImagePreview([]);
+        setModalOpen(false);
       } else {
         toast.error(res?.message);
       }
     } catch (err: any) {
-    //   console.error(err);
-      toast.error(err)
+      //   console.error(err);
+      toast.error(err);
     }
   };
 
