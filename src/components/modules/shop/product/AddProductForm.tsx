@@ -4,16 +4,151 @@ import Logo from "@/app/assets/svgs/Logo";
 import { Button } from "@/components/ui/button";
 import NMImageUploader from "@/components/ui/core/NMImageUploader";
 import ImagePreviewer from "@/components/ui/core/NMImageUploader/ImagePreviewer";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { getAllBrands } from "@/services/Brand";
+import { getAllCategories } from "@/services/Category";
+import { addProduct } from "@/services/product";
+import { IBrand } from "@/types/brand";
+import { ICategory } from "@/types/category";
 import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { FieldValues, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export default function AddProductsForm() {
+  const [imageFiles, setImageFiles] = useState<File[] | []>([]);
+  const [imagePreview, setImagePreview] = useState<string[] | []>([]);
+  const [categories, setCategories] = useState<ICategory[] | []>([]);
+  const [brands, setBrands] = useState<IBrand[] | []>([]);
 
+  const router = useRouter();
 
-    
+  const form = useForm({
+    defaultValues: {
+      name: "",
+      description: "",
+      price: "",
+      category: "",
+      brand: "",
+      stock: "",
+      weight: "",
+      availableColors: [{ value: "" }],
+      keyFeatures: [{ value: "" }],
+      specification: [{ key: "", value: "" }],
+    },
+  });
+
+  const {
+    formState: { isSubmitting },
+  } = form;
+
+  const { append: appendColor, fields: colorFields } = useFieldArray({
+    control: form.control,
+    name: "availableColors",
+  });
+
+  const addColor = () => {
+    appendColor({ value: "" });
+  };
+
+  const { append: appendFeatures, fields: featureFields } = useFieldArray({
+    control: form.control,
+    name: "keyFeatures",
+  });
+
+  const addFeatures = () => {
+    appendFeatures({ value: "" });
+  };
+
+  const { append: appendSpec, fields: specFields } = useFieldArray({
+    control: form.control,
+    name: "specification",
+  });
+
+  const addSpec = () => {
+    appendSpec({ key: "", value: "" });
+  };
+
+  // console.log(specFields);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const [categoriesData, brandsData] = await Promise.all([
+        getAllCategories(),
+        getAllBrands(),
+      ]);
+
+      setCategories(categoriesData?.data);
+      setBrands(brandsData?.data);
+    };
+
+    fetchData();
+  }, []);
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const availableColors = data.availableColors.map(
+      (color: { value: string }) => color.value
+    );
+
+    const keyFeatures = data.keyFeatures.map(
+      (feature: { value: string }) => feature.value
+    );
+
+    const specification: { [key: string]: string } = {};
+    data.specification.forEach(
+      (item: { key: string; value: string }) =>
+        (specification[item.key] = item.value)
+    );
+
+    // console.log({ availableColors, keyFeatures, specification });
+
+    const modifiedData = {
+      ...data,
+      availableColors,
+      keyFeatures,
+      specification,
+      price: parseFloat(data.price),
+      stock: parseInt(data.stock),
+      weight: parseFloat(data.stock),
+    };
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(modifiedData));
+
+    for (const file of imageFiles) {
+      formData.append("images", file);
+    }
+    try {
+      const res = await addProduct(formData);
+
+      if (res.success) {
+        toast.success(res.message);
+        router.push("/user/shop/products");
+      } else {
+        toast.error(res.message);
+      }
+    } catch (err: any) {
+      console.error(err);
+    }
+  };
+
   return (
     <div>
       <div className="border-2 border-gray-300 rounded-xl flex-grow max-w-2xl p-5 ">
