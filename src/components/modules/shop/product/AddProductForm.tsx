@@ -29,7 +29,12 @@ import { ICategory } from "@/types/category";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FieldValues, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import {
+  FieldValues,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { toast } from "sonner";
 
 export default function AddProductsForm() {
@@ -122,7 +127,7 @@ export default function AddProductsForm() {
     const modifiedData = {
       ...data,
       availableColors,
-      keyFeatures,
+      // keyFeatures,
       specification,
       price: parseFloat(data.price),
       stock: parseInt(data.stock),
@@ -164,6 +169,8 @@ export default function AddProductsForm() {
                 Basic Information
               </p>
             </div>
+
+            {/* Product name */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <FormField
                 control={form.control}
@@ -277,6 +284,7 @@ export default function AddProductsForm() {
               />
             </div>
 
+            {/* Description */}
             <div className="my-5">
               <FormField
                 control={form.control}
@@ -297,6 +305,7 @@ export default function AddProductsForm() {
               />
             </div>
 
+            {/* image */}
             <div>
               <div className="flex justify-between items-center border-t border-b py-3 my-5">
                 <p className="text-primary font-bold text-xl">Images</p>
@@ -317,6 +326,7 @@ export default function AddProductsForm() {
               </div>
             </div>
 
+            {/* Color */}
             <div>
               <div className="flex justify-between items-center border-t border-b py-3 my-5">
                 <p className="text-primary font-bold text-xl">
@@ -353,6 +363,7 @@ export default function AddProductsForm() {
               </div>
             </div>
 
+            {/* Key Feture */}
             <div>
               <div className="flex justify-between items-center border-t border-b py-3 my-5">
                 <p className="text-primary font-bold text-xl">Key Features</p>
@@ -387,6 +398,7 @@ export default function AddProductsForm() {
               </div>
             </div>
 
+            {/* Speciication */}
             <div>
               <div className="flex justify-between items-center border-t border-b py-3 my-5">
                 <p className="text-primary font-bold text-xl">Specification</p>
@@ -435,6 +447,7 @@ export default function AddProductsForm() {
               ))}
             </div>
 
+            {/* Submit Button */}
             <Button
               type="submit"
               className="mt-5 w-full"
