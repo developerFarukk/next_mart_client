@@ -82,6 +82,9 @@ export default function AddProductsForm() {
     appendFeatures({ value: "" });
   };
 
+  // console.log(addFeatures);
+  
+
   const { append: appendSpec, fields: specFields } = useFieldArray({
     control: form.control,
     name: "specification",
