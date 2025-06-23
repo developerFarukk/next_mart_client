@@ -1,3 +1,4 @@
+import Category from "@/components/modules/home/Category";
 import HeroSection from "@/components/modules/home/HeroSection";
 
 
@@ -5,7 +6,7 @@ const HomePage = async () => {
   return (
     <div>
       <HeroSection />
-      {/* <Category /> */}
+      <Category />
       {/* <FeaturedProducts /> */}
       {/* <FlashSale /> */}
       {/* <TopBrands /> */}
