@@ -37,7 +37,7 @@ import { IProduct } from "@/types/product";
 import { ICategory } from "@/types/category";
 import { IBrand } from "@/types/brand";
 import { updateProduct } from "@/services/product";
-import Logo from "@/app/assets/svgs/Logo";
+import Logo from "@/assets/svgs/Logo";
 
 
 export default function UpdateProductForm({ product }: { product: IProduct }) {
